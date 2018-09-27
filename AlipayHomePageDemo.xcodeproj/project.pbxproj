@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CF3321F9215B8B5A0061D64B /* MJRefresh.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3321F8215B8B5A0061D64B /* MJRefresh.framework */; };
+		CF3321FC215C87360061D64B /* IndexTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CF3321FB215C87360061D64B /* IndexTableView.m */; };
 		CF8B42E12154DD780052CA6C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8B42E02154DD780052CA6C /* AppDelegate.m */; };
 		CF8B42E42154DD780052CA6C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8B42E32154DD780052CA6C /* ViewController.m */; };
 		CF8B42E72154DD780052CA6C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF8B42E52154DD780052CA6C /* Main.storyboard */; };
@@ -37,6 +38,8 @@
 
 /* Begin PBXFileReference section */
 		CF3321F8215B8B5A0061D64B /* MJRefresh.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MJRefresh.framework; sourceTree = "<group>"; };
+		CF3321FA215C87360061D64B /* IndexTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IndexTableView.h; sourceTree = "<group>"; };
+		CF3321FB215C87360061D64B /* IndexTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IndexTableView.m; sourceTree = "<group>"; };
 		CF8B42DC2154DD780052CA6C /* AlipayHomePageDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlipayHomePageDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF8B42DF2154DD780052CA6C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CF8B42E02154DD780052CA6C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -109,6 +112,8 @@
 				CF8B42E02154DD780052CA6C /* AppDelegate.m */,
 				CF8B42E22154DD780052CA6C /* ViewController.h */,
 				CF8B42E32154DD780052CA6C /* ViewController.m */,
+				CF3321FA215C87360061D64B /* IndexTableView.h */,
+				CF3321FB215C87360061D64B /* IndexTableView.m */,
 				CF8B42E52154DD780052CA6C /* Main.storyboard */,
 				CF8B42E82154DD7A0052CA6C /* Assets.xcassets */,
 				CF8B42EA2154DD7A0052CA6C /* LaunchScreen.storyboard */,
@@ -268,6 +273,7 @@
 			files = (
 				CF8B42E42154DD780052CA6C /* ViewController.m in Sources */,
 				CF8B42EF2154DD7A0052CA6C /* main.m in Sources */,
+				CF3321FC215C87360061D64B /* IndexTableView.m in Sources */,
 				CF8B42E12154DD780052CA6C /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

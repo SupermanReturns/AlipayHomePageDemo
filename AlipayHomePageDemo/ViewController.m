@@ -20,6 +20,8 @@
 @interface ViewController ()<UIScrollViewDelegate,UIGestureRecognizerDelegate>
 @property(strong,nonatomic)UIScrollView *mainScrollView;
 @property(strong,nonatomic)UIView *navView;
+@property(strong,nonatomic)UIView *mainNavView;
+@property(strong,nonatomic)UIView *coverNavView;
 
 @end
 
@@ -39,7 +41,64 @@
         _navView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, 64)];
         _navView.backgroundColor=[UIColor colorWithRed:65/255.0 green:128/255.0 blue:1 alpha:1];
     }
+    return _navView;
 }
+-(UIView *)mainNavView{
+    if (!_mainNavView) {
+        _mainNavView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,kWidth , 64)];
+        _mainNavView.backgroundColor=[UIColor clearColor];
+        UIButton *payButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        [payButton setImage:@"" forState:UIControlStateNormal];
+        [payButton setTitle:@"账单" forState:UIControlStateNormal];
+        payButton.titleLabel.font = [UIFont systemFontOfSize:13];
+        payButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+        [payButton.titleLabel sizeToFit];
+        
+        CGRect newFrame=payButton.frame;
+        newFrame.origin.y = 20+10;
+        newFrame.origin.x=10;
+        newFrame.size.width =newFrame.size.width +10;
+        payButton.frame = newFrame;
+        [_mainNavView addSubview:payButton];
+    }
+    return _mainNavView;
+}
+-(UIView *)coverNavView{
+    if (!_coverNavView) {
+        _coverNavView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, 64)];
+        _coverNavView.backgroundColor = [UIColor clearColor];
+        
+        UIButton *payButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        [payButton setImage:@"" forState:UIControlStateNormal];
+        [payButton.titleLabel sizeToFit];
+
+        CGRect newFrame=payButton.frame;
+        newFrame.origin.y = 20+10;
+        newFrame.origin.x=10;
+        newFrame.size.width =newFrame.size.width +10;
+        payButton.frame = newFrame;
+        
+        UIButton *scanButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        [scanButton setImage:@"" forState:UIControlStateNormal];
+        [scanButton.titleLabel sizeToFit];
+        newFrame.origin.x = newFrame.origin.x +40 + newFrame.size.width;
+        scanButton.frame= newFrame;
+        
+        UIButton *searchButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        [searchButton setImage:@"" forState:UIControlStateNormal];
+        [searchButton.titleLabel sizeToFit];
+        newFrame.origin.x = newFrame.origin.x +40 + newFrame.size.width;
+        searchButton.frame  =newFrame;
+        
+        
+        [_coverNavView addSubview:payButton];
+        [_coverNavView addSubview:scanButton];
+        [_coverNavView addSubview:searchButton];
+        _coverNavView.alpha =0;
+    }
+    return _coverNavView;
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
