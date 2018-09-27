@@ -10,4 +10,8 @@
 
 @interface IndexTableView : UITableView
 
+@property(assign,nonatomic)CGFloat contentOffsetY;
+
+-(void)startRefreshing;
+-(void)endRefreshing;
 @end
