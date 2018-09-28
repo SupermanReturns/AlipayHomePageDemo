@@ -7,8 +7,9 @@
 //
 
 #import "ViewController.h"
-//#import "MJRefresh.h"
-#import <MJRefresh/MJRefresh.h>
+#import "MJRefresh.h"
+
+//#import <MJRefresh/MJRefresh.h>
 #import "IndexTableView.h"
 #import "UIButton+Extension.h"
 
@@ -24,11 +25,14 @@
 @property(strong,nonatomic)UIView *navView;
 @property(strong,nonatomic)UIView *mainNavView;
 @property(strong,nonatomic)UIView *coverNavView;
-@property(strong,nonatomic)UITableView *indexTableView;
+@property(strong,nonatomic)IndexTableView *indexTableView;
 @property(strong,nonatomic)UIView *functionHeaderView;
 
 @property(strong,nonatomic)UIView *appHeaderView;
 @property(strong,nonatomic)UIView *headerView;
+
+@property(assign,nonatomic)NSInteger topOffsetY;
+
 
 @end
 
@@ -54,8 +58,9 @@
     if (!_mainNavView) {
         _mainNavView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,kWidth , 64)];
         _mainNavView.backgroundColor=[UIColor clearColor];
+        
         UIButton *payButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        [payButton setImage:@"" forState:UIControlStateNormal];
+        [payButton setImage:[UIImage imageNamed:@"home_pay"] forState:UIControlStateNormal];
         [payButton setTitle:@"账单" forState:UIControlStateNormal];
         payButton.titleLabel.font = [UIFont systemFontOfSize:13];
         payButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
@@ -76,7 +81,7 @@
         _coverNavView.backgroundColor = [UIColor clearColor];
         
         UIButton *payButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        [payButton setImage:@"" forState:UIControlStateNormal];
+//        [payButton setImage:@"" forState:UIControlStateNormal];
         [payButton.titleLabel sizeToFit];
 
         CGRect newFrame=payButton.frame;
@@ -86,13 +91,13 @@
         payButton.frame = newFrame;
         
         UIButton *scanButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        [scanButton setImage:@"" forState:UIControlStateNormal];
+        [scanButton setImage:[UIImage imageNamed:@"home_scan"] forState:UIControlStateNormal];
         [scanButton.titleLabel sizeToFit];
         newFrame.origin.x = newFrame.origin.x +40 + newFrame.size.width;
         scanButton.frame= newFrame;
         
         UIButton *searchButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        [searchButton setImage:@"" forState:UIControlStateNormal];
+        [searchButton setImage:[UIImage imageNamed:@"home_search"] forState:UIControlStateNormal];
         [searchButton.titleLabel sizeToFit];
         newFrame.origin.x = newFrame.origin.x +40 + newFrame.size.width;
         searchButton.frame  =newFrame;
@@ -124,26 +129,27 @@
         
         UIButton *scanButton=[UIButton buttonWithType:UIButtonTypeCustom];
         scanButton.frame=CGRectMake(padding, padding, buttonWidth, buttonWidth);
-        [scanButton setImage:@"" forState:UIControlStateNormal];
+        
+        [scanButton setImage:[UIImage imageNamed:@"home_scan"] forState:UIControlStateNormal];
         [scanButton setTitle:@"扫一扫" forState:UIControlStateNormal];
         scanButton.titleLabel.font = [UIFont systemFontOfSize:14];
 //        scanButton.al
         
         UIButton *payButton=[UIButton buttonWithType:UIButtonTypeCustom];
         payButton.frame=CGRectMake(padding+ kWidth/4.0, padding, buttonWidth, buttonWidth);
-        [payButton setImage:@"" forState:UIControlStateNormal];
+        [payButton setImage:[UIImage imageNamed:@"home_pay"] forState:UIControlStateNormal];
         [payButton setTitle:@"付款" forState:UIControlStateNormal];
         payButton.titleLabel.font = [UIFont systemFontOfSize:14];
 
         UIButton *cardButton=[UIButton buttonWithType:UIButtonTypeCustom];
         cardButton.frame=CGRectMake(padding+ kWidth/4.0*2, padding, buttonWidth, buttonWidth);
-        [cardButton setImage:@"" forState:UIControlStateNormal];
+        [cardButton setImage:[UIImage imageNamed:@"home_pay"] forState:UIControlStateNormal];
         [cardButton setTitle:@"卡券" forState:UIControlStateNormal];
         cardButton.titleLabel.font = [UIFont systemFontOfSize:14];
         
         UIButton *xiuButton=[UIButton buttonWithType:UIButtonTypeCustom];
         xiuButton.frame=CGRectMake(padding+ kWidth/4.0*3, padding, buttonWidth, buttonWidth);
-        [xiuButton setImage:@"" forState:UIControlStateNormal];
+        [xiuButton setImage:[UIImage imageNamed:@"home_xiu"] forState:UIControlStateNormal];
         [xiuButton setTitle:@"到位" forState:UIControlStateNormal];
         xiuButton.titleLabel.font = [UIFont systemFontOfSize:14];
         
@@ -172,7 +178,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    int topOffsetY =functionHeaderViewHeight + singleAppHeaderViewHeight;
+    _topOffsetY =functionHeaderViewHeight + singleAppHeaderViewHeight;
     
     [self.view addSubview:_mainScrollView];
     [self.view addSubview:_navView];
@@ -184,11 +190,85 @@
     [_headerView addSubview:_appHeaderView];
     [_mainScrollView addSubview:_indexTableView];
     
+//    _indexTableView.changeContentSize=^(){
+//
+//    };
+    __weak typeof(self) weakSelf = self;
+    _indexTableView.changeContentSize = ^(CGSize contentSize) {
+        [weakSelf updateContentSize:contentSize];
+    };
+    _indexTableView.mj_footer=[MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        [weakSelf.mainScrollView.mj_footer endRefreshing];
+        [weakSelf.indexTableView loadeMoreData];
+    }];
     
 
 }
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self updateContentSize:_indexTableView.contentSize];
+}
+-(void)updateContentSize:(CGSize)size{
+    CGSize contentSize = size;
+    contentSize.height = contentSize.height + _topOffsetY;
+    _indexTableView.contentSize =contentSize;
+    CGRect newframe = _indexTableView.frame;
+    newframe.size.height = size.height;
+    _indexTableView.frame=newframe;
+}
+-(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset{
+    CGFloat y = scrollView.contentOffset.y;
+    
+    if (y<-65) {
+        [_indexTableView.mj_header beginRefreshing];
+    }else if (y>0 && y<= functionHeaderViewHeight){
+        [self functionViewAnimation:y];
+    }
+}
+-(void)functionViewAnimation:(CGFloat) offsetY{
+    if (offsetY>functionHeaderViewHeight/2.0) {
+        [_indexTableView setContentOffset:CGPointMake(0, 95) animated:true];
+    }else{
+        [_indexTableView setContentOffset:CGPointMake(0, 0) animated:true];
+    }
+}
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    CGFloat y = scrollView.contentOffset.y;
+    if (y<=0) {
+        CGRect newFrame = self.headerView.frame;
+        newFrame.origin.y = y;
+        self.headerView.frame = newFrame;
+
+        newFrame = self.indexTableView.frame;
+        newFrame.origin.y = y + _topOffsetY;
+        self.indexTableView.frame = newFrame;
+        
+        [_indexTableView setScrollViewContentOffSet:CGPointMake(0, y)];
+        //功能区状态回归
+        newFrame = self.functionHeaderView.frame;
+        newFrame.origin.y = 0;
+        self.functionHeaderView.frame = newFrame;
+
+    }else if (y < functionHeaderViewHeight && y>0){
+        CGRect newFrame = self.functionHeaderView.frame;
+        newFrame.origin.y = y/2;
+        self.functionHeaderView.frame = newFrame;
+        
+        CGFloat alpha=(1 - y/functionHeaderViewHeight*2.5 ) > 0 ? (1 - y/functionHeaderViewHeight*2.5 ) : 0;
+        _functionHeaderView.alpha=alpha;
+        if(alpha>0.5){
+            CGFloat newAlpha =  alpha*2 - 1;
+            _mainNavView.alpha=newAlpha;
+            _coverNavView.alpha = 0;
+        }else{
+            CGFloat newAlpha =  alpha*2;
+            _mainNavView.alpha = 0;
+            _coverNavView.alpha = 1 - newAlpha;
+        }
 
 
+    }
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
