@@ -79,7 +79,6 @@
 -(UIView *)coverNavView{
     if (!_coverNavView) {
         _coverNavView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, 64)];
-        _coverNavView.backgroundColor = [UIColor clearColor];
         
         UIButton *payButton=[UIButton buttonWithType:UIButtonTypeCustom];
 //        [payButton setImage:@"" forState:UIControlStateNormal];
@@ -107,6 +106,7 @@
         [_coverNavView addSubview:payButton];
         [_coverNavView addSubview:scanButton];
         [_coverNavView addSubview:searchButton];
+//        _coverNavView.backgroundColor=[UIColor yellowColor];
         _coverNavView.alpha =0;
     }
     return _coverNavView;
@@ -117,16 +117,16 @@
         int tableviewHeight = 1000 - orginY;
         _indexTableView = [[IndexTableView alloc]initWithFrame:CGRectMake(0, orginY, kWidth, tableviewHeight) style:UITableViewStylePlain];
 //        _indexTableView.isScrollEnabled = false;
-        _indexTableView.scrollEnabled=false;
+//        _indexTableView.scrollEnabled=false;
     }
     return _indexTableView;
 }
 -(UIView *)functionHeaderView{
     if (!_functionHeaderView) {
         _functionHeaderView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, functionHeaderViewHeight)];
-        _functionHeaderView.backgroundColor=[UIColor clearColor];
+        _functionHeaderView.backgroundColor=[UIColor yellowColor];
         CGFloat padding =5.0;
-        int buttonWidth =kWidth/4 - padding*2;
+        CGFloat buttonWidth =kWidth/4 - padding*2;
         
         UIButton *scanButton=[UIButton buttonWithType:UIButtonTypeCustom];
         scanButton.frame=CGRectMake(padding, padding, buttonWidth, buttonWidth);
@@ -134,26 +134,29 @@
         [scanButton setImage:[UIImage imageNamed:@"home_scan"] forState:UIControlStateNormal];
         [scanButton setTitle:@"扫一扫" forState:UIControlStateNormal];
         scanButton.titleLabel.font = [UIFont systemFontOfSize:14];
-//        scanButton.al
+       [ scanButton alignImageAndTitleVertically:6.0];
         
         UIButton *payButton=[UIButton buttonWithType:UIButtonTypeCustom];
         payButton.frame=CGRectMake(padding+ kWidth/4.0, padding, buttonWidth, buttonWidth);
         [payButton setImage:[UIImage imageNamed:@"home_pay"] forState:UIControlStateNormal];
         [payButton setTitle:@"付款" forState:UIControlStateNormal];
         payButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [payButton alignImageAndTitleVertically:6.0];
 
         UIButton *cardButton=[UIButton buttonWithType:UIButtonTypeCustom];
         cardButton.frame=CGRectMake(padding+ kWidth/4.0*2, padding, buttonWidth, buttonWidth);
         [cardButton setImage:[UIImage imageNamed:@"home_pay"] forState:UIControlStateNormal];
         [cardButton setTitle:@"卡券" forState:UIControlStateNormal];
         cardButton.titleLabel.font = [UIFont systemFontOfSize:14];
-        
+        [cardButton alignImageAndTitleVertically:6.0];
+
         UIButton *xiuButton=[UIButton buttonWithType:UIButtonTypeCustom];
         xiuButton.frame=CGRectMake(padding+ kWidth/4.0*3, padding, buttonWidth, buttonWidth);
         [xiuButton setImage:[UIImage imageNamed:@"home_xiu"] forState:UIControlStateNormal];
         [xiuButton setTitle:@"到位" forState:UIControlStateNormal];
         xiuButton.titleLabel.font = [UIFont systemFontOfSize:14];
-        
+        [xiuButton alignImageAndTitleVertically:6.0];
+
         [_functionHeaderView addSubview:scanButton];
         [_functionHeaderView addSubview:payButton];
         [_functionHeaderView addSubview:cardButton];
@@ -170,8 +173,9 @@
 }
 -(UIView *)headerView{
     if (!_headerView) {
-        _headerView = [[UIView alloc]initWithFrame:CGRectMake(0, functionHeaderViewHeight, kWidth, singleAppHeaderViewHeight)];
-        _headerView.backgroundColor=[UIColor colorWithRed:65/255.0 green:128/255.0 blue:1 alpha:1];
+        _headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth,functionHeaderViewHeight + singleAppHeaderViewHeight)];
+//        _headerView.backgroundColor=[UIColor colorWithRed:65/255.0 green:128/255.0 blue:1 alpha:1];
+        _headerView.backgroundColor=[UIColor redColor];
     }
     return _headerView;
 }
@@ -198,9 +202,13 @@
     _indexTableView.changeContentSize = ^(CGSize contentSize) {
         [weakSelf updateContentSize:contentSize];
     };
-    _indexTableView.mj_footer=[MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-        [weakSelf.mainScrollView.mj_footer endRefreshing];
-        [weakSelf.indexTableView loadeMoreData];
+    _mainScrollView.mj_footer=[MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0*NSEC_PER_SEC)),dispatch_get_main_queue(), ^{
+            [weakSelf.mainScrollView.mj_footer endRefreshing];
+            [weakSelf.indexTableView loadeMoreData];
+        });
+
     }];
     
 
@@ -212,7 +220,7 @@
 -(void)updateContentSize:(CGSize)size{
     CGSize contentSize = size;
     contentSize.height = contentSize.height + _topOffsetY;
-    _indexTableView.contentSize =contentSize;
+    _mainScrollView.contentSize =contentSize;
     CGRect newframe = _indexTableView.frame;
     newframe.size.height = size.height;
     _indexTableView.frame=newframe;
