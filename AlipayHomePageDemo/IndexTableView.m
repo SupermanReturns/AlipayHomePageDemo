@@ -29,19 +29,10 @@
         
         __weak typeof(self) weakSelf = self;
         self.mj_header =[MJRefreshNormalHeader headerWithRefreshingBlock:^{
-            dispatch_queue_t queue = dispatch_get_main_queue();
-//            dispatch_async(queue, ^{
-////                NSLog(@"使用异步函数执行主队列中的任务1--%@",[NSThread currentThread]);
-//                [weakSelf.mj_header endRefreshing];
-//                [weakSelf reloadData];
-//            });
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            });
-//            dispatchasync
+
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0*NSEC_PER_SEC)),dispatch_get_main_queue(), ^{
                 [weakSelf.mj_header endRefreshing];
                 [weakSelf reloadData];
-//                1秒后执行这里的代码...在哪个线程执行，跟队列类型有关
             });
     
         }];
@@ -53,7 +44,6 @@
     numberRows+10;
     [self reloadData];
     _changeContentSize(self.contentSize);
-//    self.c
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
