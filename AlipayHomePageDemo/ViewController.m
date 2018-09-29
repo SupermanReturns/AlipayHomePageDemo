@@ -44,6 +44,7 @@
         _mainScrollView.delegate=self;
         _mainScrollView.contentSize = CGSizeMake(kWidth,100);
         _mainScrollView.scrollIndicatorInsets = UIEdgeInsetsMake(155, 0, 0, 0);
+        _mainScrollView.backgroundColor=[UIColor greenColor];
     }
     return _mainScrollView;
 }
@@ -180,15 +181,15 @@
     // Do any additional setup after loading the view, typically from a nib.
     _topOffsetY =functionHeaderViewHeight + singleAppHeaderViewHeight;
     
-    [self.view addSubview:_mainScrollView];
-    [self.view addSubview:_navView];
-    [self.view addSubview:_mainNavView];
-    [self.view addSubview:_coverNavView];
+    [self.view addSubview:self.mainScrollView];
+    [self.view addSubview:self.navView];
+    [self.view addSubview:self.mainNavView];
+    [self.view addSubview:self.coverNavView];
 
-    [_mainScrollView addSubview:_headerView];
-    [_headerView addSubview:_functionHeaderView];
-    [_headerView addSubview:_appHeaderView];
-    [_mainScrollView addSubview:_indexTableView];
+    [self.mainScrollView addSubview:self.headerView];
+    [_headerView addSubview:self.functionHeaderView];
+    [_headerView addSubview:self.appHeaderView];
+    [_mainScrollView addSubview:self.indexTableView];
     
 //    _indexTableView.changeContentSize=^(){
 //
