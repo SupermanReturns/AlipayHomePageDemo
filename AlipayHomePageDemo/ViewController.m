@@ -61,17 +61,18 @@
         _mainNavView.backgroundColor=[UIColor clearColor];
         
         UIButton *payButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        [payButton setImage:[UIImage imageNamed:@"home_pay"] forState:UIControlStateNormal];
+        [payButton setImage:[UIImage imageNamed:@"pay_mini"] forState:UIControlStateNormal];
+        payButton.frame=CGRectMake(10, 10, 90, 44);
         [payButton setTitle:@"账单" forState:UIControlStateNormal];
         payButton.titleLabel.font = [UIFont systemFontOfSize:13];
         payButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
         [payButton.titleLabel sizeToFit];
         
-        CGRect newFrame=payButton.frame;
-        newFrame.origin.y = 20+10;
-        newFrame.origin.x=10;
-        newFrame.size.width =newFrame.size.width +10;
-        payButton.frame = newFrame;
+//        CGRect newFrame=payButton.frame;
+//        newFrame.origin.y = 20+10;
+//        newFrame.origin.x=10;
+//        newFrame.size.width =newFrame.size.width +10;
+//        payButton.frame = newFrame;
         [_mainNavView addSubview:payButton];
     }
     return _mainNavView;
@@ -82,24 +83,34 @@
         
         UIButton *payButton=[UIButton buttonWithType:UIButtonTypeCustom];
 //        [payButton setImage:@"" forState:UIControlStateNormal];
+        [payButton setImage:[UIImage imageNamed:@"pay_mini"] forState:UIControlStateNormal];
+        payButton.frame=CGRectMake(10, 10, 64, 44);
         [payButton.titleLabel sizeToFit];
+        CGRect newFrame=CGRectMake(10, 10, 64, 44);
 
-        CGRect newFrame=payButton.frame;
-        newFrame.origin.y = 20+10;
-        newFrame.origin.x=10;
-        newFrame.size.width =newFrame.size.width +10;
-        payButton.frame = newFrame;
+        
+//        CGRect newFrame=payButton.frame;
+//        newFrame.origin.y = 20+10;
+//        newFrame.origin.x=10;
+//        newFrame.size.width =newFrame.size.width +10;
+//        payButton.frame = newFrame;
+        
         
         UIButton *scanButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        [scanButton setImage:[UIImage imageNamed:@"home_scan"] forState:UIControlStateNormal];
+        [scanButton setImage:[UIImage imageNamed:@"scan_mini"] forState:UIControlStateNormal];
+//        [scanButton setBackgroundImage:[UIImage imageNamed:@"scan_mini"] forState:UIControlStateNormal];
+
         [scanButton.titleLabel sizeToFit];
-        newFrame.origin.x = newFrame.origin.x +40 + newFrame.size.width;
+        newFrame.origin.x = newFrame.origin.x +10 + newFrame.size.width;
         scanButton.frame= newFrame;
         
+        
         UIButton *searchButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        [searchButton setImage:[UIImage imageNamed:@"home_search"] forState:UIControlStateNormal];
+        [searchButton setImage:[UIImage imageNamed:@"camera_mini"] forState:UIControlStateNormal];
+//        [searchButton setBackgroundImage:[UIImage imageNamed:@"camera_mini"] forState:UIControlStateNormal];
+
         [searchButton.titleLabel sizeToFit];
-        newFrame.origin.x = newFrame.origin.x +40 + newFrame.size.width;
+        newFrame.origin.x = newFrame.origin.x +10 + newFrame.size.width;
         searchButton.frame  =newFrame;
         
         
@@ -124,7 +135,7 @@
 -(UIView *)functionHeaderView{
     if (!_functionHeaderView) {
         _functionHeaderView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, functionHeaderViewHeight)];
-        _functionHeaderView.backgroundColor=[UIColor yellowColor];
+//        _functionHeaderView.backgroundColor=[UIColor yellowColor];
         CGFloat padding =5.0;
         CGFloat buttonWidth =kWidth/4 - padding*2;
         
@@ -174,8 +185,7 @@
 -(UIView *)headerView{
     if (!_headerView) {
         _headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth,functionHeaderViewHeight + singleAppHeaderViewHeight)];
-//        _headerView.backgroundColor=[UIColor colorWithRed:65/255.0 green:128/255.0 blue:1 alpha:1];
-        _headerView.backgroundColor=[UIColor redColor];
+        _headerView.backgroundColor=[UIColor colorWithRed:65/255.0 green:128/255.0 blue:1 alpha:1];
     }
     return _headerView;
 }
