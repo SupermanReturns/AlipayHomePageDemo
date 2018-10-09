@@ -44,6 +44,7 @@
         _mainScrollView.delegate=self;
         _mainScrollView.contentSize = CGSizeMake(kWidth,100);
         _mainScrollView.scrollIndicatorInsets = UIEdgeInsetsMake(155, 0, 0, 0);
+//        _mainScrollView.indic
         _mainScrollView.backgroundColor=[UIColor greenColor];
     }
     return _mainScrollView;
@@ -58,7 +59,6 @@
 -(UIView *)mainNavView{
     if (!_mainNavView) {
         _mainNavView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,kWidth , 64)];
-        _mainNavView.backgroundColor=[UIColor clearColor];
         
         UIButton *payButton=[UIButton buttonWithType:UIButtonTypeCustom];
         [payButton setImage:[UIImage imageNamed:@"pay_mini"] forState:UIControlStateNormal];
@@ -67,7 +67,8 @@
         payButton.titleLabel.font = [UIFont systemFontOfSize:13];
         payButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
         [payButton.titleLabel sizeToFit];
-        
+        _mainNavView.backgroundColor=[UIColor clearColor];
+
         [_mainNavView addSubview:payButton];
     }
     return _mainNavView;
@@ -168,6 +169,7 @@
     if (!_headerView) {
         _headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth,functionHeaderViewHeight + singleAppHeaderViewHeight)];
         _headerView.backgroundColor=[UIColor colorWithRed:65/255.0 green:128/255.0 blue:1 alpha:1];
+//        _headerView.backgroundColor=[UIColor redColor];
     }
     return _headerView;
 }
@@ -242,6 +244,7 @@
         newFrame.origin.y = y + _topOffsetY;
         self.indexTableView.frame = newFrame;
         
+        //偏移量给到tableview，tableview自己来滑动
         [_indexTableView setScrollViewContentOffSet:CGPointMake(0, y)];
         //功能区状态回归
         newFrame = self.functionHeaderView.frame;
@@ -249,10 +252,11 @@
         self.functionHeaderView.frame = newFrame;
 
     }else if (y < functionHeaderViewHeight && y>0){
+        //处理功能区隐藏和视差
         CGRect newFrame = self.functionHeaderView.frame;
         newFrame.origin.y = y/2;
         self.functionHeaderView.frame = newFrame;
-        
+        //处理透明度
         CGFloat alpha=(1 - y/functionHeaderViewHeight*2.5 ) > 0 ? (1 - y/functionHeaderViewHeight*2.5 ) : 0;
         _functionHeaderView.alpha=alpha;
         if(alpha>0.5){

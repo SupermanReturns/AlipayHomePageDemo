@@ -20,6 +20,5 @@ typedef void (^ChangeContentSize)(CGSize);     //选择文件夹
 -(void)endRefreshing;
 -(void)loadeMoreData;
 
-//-(void)setScrollViewContentOffSet:(CGPoint)point;
 -(void)setScrollViewContentOffSet:(CGPoint)point;
 @end
