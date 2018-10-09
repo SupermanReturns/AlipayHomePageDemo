@@ -41,7 +41,7 @@
     return self;
 }
 -(void)loadeMoreData{
-    numberRows+10;
+    numberRows;
     [self reloadData];
     _changeContentSize(self.contentSize);
 }
